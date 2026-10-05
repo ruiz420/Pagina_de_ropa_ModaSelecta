@@ -1,6 +1,7 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
+import { getAuthSecret } from "@/features/auth/auth-secret";
 import { prisma } from "@/lib/prisma";
 
 const demoUser = {
@@ -16,7 +17,10 @@ function isDemoLogin(email: string, password: string) {
 }
 
 export const authOptions: NextAuthOptions = {
-  secret: process.env.NEXTAUTH_SECRET ?? "development-secret",
+  // Se lee en cada peticion; en produccion falla si falta un secreto propio y fuerte.
+  get secret() {
+    return getAuthSecret();
+  },
   session: {
     strategy: "jwt",
     maxAge: 60 * 60 * 2,
@@ -40,7 +44,8 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        const allowDemoLogin = !process.env.DATABASE_URL;
+        const allowDemoLogin =
+          !process.env.DATABASE_URL && process.env.NODE_ENV !== "production";
 
         if (allowDemoLogin && isDemoLogin(credentials.email, credentials.password)) {
           return demoUser;

@@ -45,3 +45,4 @@ next-env.d.ts
 
 # configuracion local de herramientas
 .claude/
+!.env.example

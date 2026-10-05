@@ -5,6 +5,14 @@ import { slugifyText } from "../src/lib/utils";
 const prisma = new PrismaClient();
 
 async function main() {
+  const adminPassword = process.env.ADMIN_PASSWORD;
+
+  if (!adminPassword || adminPassword.length < 12) {
+    throw new Error(
+      "Define ADMIN_PASSWORD (minimo 12 caracteres) en el archivo .env antes de ejecutar el seed.",
+    );
+  }
+
   const roles = await Promise.all(
     [RoleName.ADMIN, RoleName.EMPLOYEE, RoleName.CUSTOMER].map((name) =>
       prisma.role.upsert({
@@ -34,7 +42,7 @@ async function main() {
     create: {
       name: "Administrador",
       email: process.env.ADMIN_EMAIL ?? "admin@example.com",
-      passwordHash: await bcrypt.hash(process.env.ADMIN_PASSWORD ?? "admin1234", 10),
+      passwordHash: await bcrypt.hash(adminPassword, 12),
       roleId: adminRole.id,
     },
   });
