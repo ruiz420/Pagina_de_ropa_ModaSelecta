@@ -1,0 +1,175 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Sistema visual Moda Selecta
+ * Direccion: boutique editorial cercana. Fondo crema, tinta calida y UN solo
+ * color de accion (frambuesa). Cada color tiene un rol; no se usan hex sueltos
+ * en los componentes, solo estas variables (via clases como bg-brand).
+ */
+:root {
+  /* Superficies y texto */
+  --background: #fbf7f2;
+  --foreground: #1f1a17; /* texto principal */
+  --card: #ffffff;
+  --card-foreground: #1f1a17;
+  --popover: #ffffff;
+  --popover-foreground: #1f1a17;
+  --muted: #f4eee6;
+  --muted-foreground: #6b6159; /* texto secundario, 5.6:1 sobre el fondo */
+  --secondary: #f3ece3;
+  --secondary-foreground: #1f1a17;
+  --border: #e8dfd4;
+  --input: #dccfc2;
+
+  /* Tinta: botones secundarios, menu, elementos sobrios */
+  --primary: #1f1a17;
+  --primary-foreground: #fbf7f2;
+
+  /* Marca y accion: comprar, ofertas, favoritos */
+  --brand: #c01867; /* 5.9:1 con texto blanco */
+  --brand-strong: #9d1456; /* hover y texto sobre fondos claros */
+  --brand-foreground: #ffffff;
+  --brand-soft: #f8e9ee; /* secciones de belleza, chips */
+
+  /* Detalle premium: champagne solo en lineas; el texto usa la version oscura */
+  --champagne: #b08d57;
+  --champagne-text: #7a5c1e;
+
+  /* Estados */
+  --success: #15803d; /* disponibilidad, confirmaciones */
+  --discount: #c01867; /* precio de oferta y % de descuento */
+  --destructive: #b91c1c;
+  --destructive-foreground: #ffffff;
+  --whatsapp: #25d366;
+
+  /* Aliases de lectura rapida */
+  --accent: var(--brand-soft);
+  --accent-foreground: var(--brand-strong);
+  --ring: var(--brand);
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: #0b0b0c;
+  --foreground: #f5f5f5;
+  --card: #111113;
+  --card-foreground: #f5f5f5;
+  --popover: #111113;
+  --popover-foreground: #f5f5f5;
+  --primary: #f5f5f5;
+  --primary-foreground: #111111;
+  --secondary: #1f2937;
+  --secondary-foreground: #f5f5f5;
+  --muted: #18181b;
+  --muted-foreground: #a1a1aa;
+  --accent: #2a1020;
+  --accent-foreground: #f9a8d4;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #27272a;
+  --input: #27272a;
+  --ring: #e5e7eb;
+  --brand: #e0307f;
+  --brand-strong: #f472b6;
+  --brand-soft: #2a1020;
+  --champagne: #c9a56a;
+  --champagne-text: #e0c48a;
+  --success: #4ade80;
+  --discount: #f472b6;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand-soft: var(--brand-soft);
+  --color-champagne: var(--champagne);
+  --color-champagne-text: var(--champagne-text);
+  --color-success: var(--success);
+  --color-discount: var(--discount);
+  --color-whatsapp: var(--whatsapp);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --font-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-mono: "Courier New", Courier, monospace;
+  --shadow-soft: 0 1px 2px rgb(31 26 23 / 0.04), 0 8px 24px -8px rgb(31 26 23 / 0.12);
+  --shadow-lift: 0 2px 4px rgb(31 26 23 / 0.05), 0 18px 40px -12px rgb(31 26 23 / 0.2);
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Franja de texto en movimiento: el contenido se duplica, por eso baja solo 50% */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 38s linear infinite;
+}
+
+/* Respeta a quien pide menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
