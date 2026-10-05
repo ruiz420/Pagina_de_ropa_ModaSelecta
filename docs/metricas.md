@@ -33,8 +33,8 @@ En desarrollo, los eventos aparecen en la consola del navegador como `[track]`.
 
 - **Pedidos concretados y recompra:** el cierre ocurre en WhatsApp. Para saber
   cuántos `send_order_whatsapp` terminan en venta hay que anotarlo a mano o
-  registrar el pedido en el panel (ya existe `/api/orders`, aún sin conectar al
-  carrito).
+  registrar el pedido en el panel (ya existe `/api/orders`, seguro y con precios
+  del servidor, pero aún sin conectar al carrito).
 - **Abandono:** se aproxima con `add_to_cart` frente a `send_order_whatsapp`.
 - **Reseñas y reputación:** no existen datos reales todavía; no se muestran.
 
@@ -71,7 +71,7 @@ Cómo saber si funciona: comparar el total promedio por pedido
 (`savings` > 0) antes y después. Revisar también el margen: el 10% sale de tu
 ganancia en esos productos.
 
-Pendiente técnico: el cálculo vive en el navegador y el pedido se cierra por
-WhatsApp, por lo que no hay riesgo de cobro automático. Si algún día el carrito
-se conecta a `/api/orders`, el servidor debe recalcular precios y descuento
-(hoy `/api/orders` confía en el precio que envía el cliente).
+Nota técnica: el descuento se calcula con la misma función (`priceCart`) en la
+bolsa y en el servidor. `/api/orders` ignora los precios que envía el navegador
+y recalcula todo desde la base de datos, por lo que el total guardado siempre
+coincide con el que ve la clienta.

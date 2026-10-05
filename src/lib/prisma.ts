@@ -12,7 +12,7 @@ function datasourceUrl() {
     return url;
   }
 
-  return `${url}${url.includes("?") ? "&" : "?"}connect_timeout=2`;
+  return `${url}${url.includes("?") ? "&" : "?"}connect_timeout=4`;
 }
 
 export const prisma =

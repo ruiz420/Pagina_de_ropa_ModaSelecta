@@ -1,25 +1,38 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/features/auth/auth-options";
+import { getStaffSession } from "@/features/auth/require-staff";
 import {
   getProductValidationMessage,
   productSchema,
 } from "@/features/products/schemas/product.schema";
 import { prisma } from "@/lib/prisma";
 
+/**
+ * Lista completa para el panel. Incluye costo y precio mayorista, por lo que
+ * solo la ve el personal; la tienda publica lee el catalogo por su servicio.
+ */
 export async function GET() {
-  const products = await prisma.product.findMany({
-    include: { category: true, images: true },
-    orderBy: { createdAt: "desc" },
-  });
+  if (!(await getStaffSession())) {
+    return NextResponse.json({ message: "No autorizado" }, { status: 401 });
+  }
 
-  return NextResponse.json(products);
+  try {
+    const products = await prisma.product.findMany({
+      include: { category: true, images: true },
+      orderBy: { createdAt: "desc" },
+    });
+
+    return NextResponse.json(products);
+  } catch (error) {
+    console.error("[products] no se pudo leer la lista", error);
+    return NextResponse.json(
+      { message: "No se pudo consultar la base de datos." },
+      { status: 503 },
+    );
+  }
 }
 
 export async function POST(request: Request) {
-  const session = await getServerSession(authOptions);
-
-  if (!["ADMIN", "EMPLOYEE"].includes(session?.user.role ?? "")) {
+  if (!(await getStaffSession())) {
     return NextResponse.json({ message: "No autorizado" }, { status: 401 });
   }
 

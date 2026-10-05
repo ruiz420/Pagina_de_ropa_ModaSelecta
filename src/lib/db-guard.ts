@@ -7,7 +7,7 @@
  * base siga sin responder, las siguientes visitas saltan directo al respaldo.
  */
 
-const QUERY_TIMEOUT_MS = 2_500;
+const QUERY_TIMEOUT_MS = 4_000;
 const COOLDOWN_MS = 60_000;
 
 let unavailableUntil = 0;
