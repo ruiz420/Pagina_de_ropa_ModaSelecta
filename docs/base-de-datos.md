@@ -8,8 +8,10 @@ gratuito disponible) y funciona sin cambios en el código.
 1. Entra a https://supabase.com y crea una cuenta o inicia sesión.
 2. **New project**: elige un nombre (por ejemplo `moda-selecta`), una
    **contraseña de base de datos larga y aleatoria** (guárdala en un gestor de
-   contraseñas) y la región más cercana (para Colombia, *South America – São
-   Paulo*).
+   contraseñas) y la región **East US (North Virginia)**. Medido desde Colombia
+   responde en ~90 ms, frente a ~133 ms de EE. UU. oeste y ~156 ms de São Paulo:
+   el tráfico desde Colombia sale por EE. UU., así que São Paulo no es la más
+   cercana en la práctica.
 3. Espera a que el proyecto termine de crearse.
 
 ## 2. Copiar la cadena de conexión
