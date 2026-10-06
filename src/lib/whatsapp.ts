@@ -16,12 +16,11 @@ export function buildWhatsappMessage(
   const lines = priced.map(({ item, unitPrice, discounted }) => {
     const color = item.color ? ` ${item.color}` : "";
     const size = item.size ? ` Talla ${item.size}` : "";
-    const image = item.image ? `\n  Imagen: ${item.image}` : "";
     const note = discounted
       ? ` (con ${STORE.bundleOffer.percent}% por combinar con una prenda)`
       : "";
 
-    return `- ${item.name} Ref ${item.reference}${color}${size} x${item.quantity} - ${formatCurrency(unitPrice)} c/u${note}${image}`;
+    return `- ${item.name} Ref ${item.reference}${color}${size} x${item.quantity} - ${formatCurrency(unitPrice)} c/u${note}`;
   });
 
   return [
