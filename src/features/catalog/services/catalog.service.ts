@@ -137,6 +137,8 @@ async function fetchCatalogProducts(
 ): Promise<CatalogProduct[]> {
   return withDatabase(async () => {
     const products = await prisma.product.findMany({
+      // Una sola consulta con JOIN: con la base remota evita ~6 viajes seguidos.
+      relationLoadStrategy: "join",
       where: {
         status: "ACTIVE",
         category: filters.category ? { slug: filters.category } : undefined,
@@ -285,6 +287,7 @@ export const getCatalogProductBySlug = cache(async (slug: string) => {
 
   return withDatabase(async () => {
     const product = await prisma.product.findUnique({
+      relationLoadStrategy: "join",
       where: { slug },
       include: {
         category: true,

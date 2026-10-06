@@ -1,5 +1,7 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  // Una sola consulta con JOIN en lugar de varias seguidas (mucho mas rapido con una base remota).
+  previewFeatures = ["relationJoins"]
 }
 
 datasource db {
