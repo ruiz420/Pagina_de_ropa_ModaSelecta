@@ -1,33 +1,22 @@
 import type { MetadataRoute } from "next";
-import { catalogProducts } from "@/features/catalog/data/mock-catalog";
+import { getSiteUrl } from "@/config/site-url";
+import { getCatalogProducts } from "@/features/catalog/services/catalog.service";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXTAUTH_URL ?? "http://localhost:3000";
+// Se regenera sola para que los productos nuevos aparezcan en Google.
+export const revalidate = 300;
+
+const STATIC_PATHS = ["", "/catalogo", "/accesorios", "/maquillaje", "/nosotros"];
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const baseUrl = getSiteUrl();
+  const products = await getCatalogProducts();
+  const now = new Date();
 
   return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-    },
-    {
-      url: `${baseUrl}/catalogo`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${baseUrl}/accesorios`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${baseUrl}/maquillaje`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${baseUrl}/nosotros`,
-      lastModified: new Date(),
-    },
-    ...catalogProducts.map((product) => ({
+    ...STATIC_PATHS.map((path) => ({ url: `${baseUrl}${path}`, lastModified: now })),
+    ...products.map((product) => ({
       url: `${baseUrl}/producto/${product.slug}`,
-      lastModified: new Date(),
+      lastModified: now,
     })),
   ];
 }

@@ -53,7 +53,7 @@ Se pegan en el panel del hosting (nunca en el repositorio):
 | `DATABASE_URL` | Supabase → Connect → **Transaction pooler** (puerto 6543). Debe terminar en `?pgbouncer=true` |
 | `DIRECT_URL` | Supabase → Connect → **Session pooler** (puerto 5432) |
 | `NEXTAUTH_SECRET` | Uno **nuevo** para producción (comando en `.env.example`) |
-| `NEXTAUTH_URL` | La dirección pública de la tienda, por ejemplo `https://tutienda.com` |
+| `NEXTAUTH_URL` | La dirección pública de la tienda, por ejemplo `https://nuvebella.vercel.app`. Si se olvida o trae `localhost`, el sitemap y `robots.txt` usan solos el dominio de Vercel, pero conviene ponerla |
 | `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_STORAGE_BUCKET` | Del paso 1 |
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | Tu número real |
 
