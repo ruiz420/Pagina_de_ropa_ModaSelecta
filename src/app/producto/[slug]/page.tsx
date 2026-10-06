@@ -14,7 +14,6 @@ import {
   RecentlyViewed,
   ViewTracker,
 } from "@/features/catalog/components/recently-viewed";
-import { catalogProducts } from "@/features/catalog/data/mock-catalog";
 import {
   getProductBadges,
   getSoldLabel,
@@ -30,8 +29,13 @@ import { STORE } from "@/config/store";
 import { isBundleOfferEnabled } from "@/features/cart/lib/pricing";
 import { formatCurrency } from "@/lib/utils";
 
-export function generateStaticParams() {
-  return catalogProducts.map((product) => ({ slug: product.slug }));
+// Los productos nuevos que no estaban al compilar se generan al primer pedido.
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  const products = await getCatalogProducts();
+
+  return products.map((product) => ({ slug: product.slug }));
 }
 
 export async function generateMetadata({

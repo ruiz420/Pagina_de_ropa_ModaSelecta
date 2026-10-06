@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { COLLECTIONS, getCollection } from "@/config/collections";
 import {
   getDiscountPercent,
@@ -113,10 +114,22 @@ function applyInMemoryRules(products: CatalogProduct[], filters: CatalogFilters)
   );
 }
 
+/**
+ * `cache` de React recuerda el resultado durante una misma visita: la cabecera,
+ * la pagina y cada seccion piden el catalogo y la base se consulta una sola vez.
+ * La clave es el JSON de los filtros porque los objetos nuevos nunca coinciden.
+ */
+const fetchCatalogProductsOnce = cache((filtersKey: string) =>
+  fetchCatalogProducts(JSON.parse(filtersKey) as CatalogFilters),
+);
+
 export async function getCatalogProducts(
   filters: CatalogFilters = {},
 ): Promise<CatalogProduct[]> {
-  return applyInMemoryRules(await fetchCatalogProducts(filters), filters);
+  return applyInMemoryRules(
+    await fetchCatalogProductsOnce(JSON.stringify(filters)),
+    filters,
+  );
 }
 
 async function fetchCatalogProducts(
@@ -236,7 +249,7 @@ function isMakeupCategory(category: string) {
   );
 }
 
-export async function getCatalogCategories(): Promise<CatalogCategory[]> {
+export const getCatalogCategories = cache(async (): Promise<CatalogCategory[]> => {
   return withDatabase(async () => {
     const categories = await prisma.category.findMany({
       include: {
@@ -256,28 +269,18 @@ export async function getCatalogCategories(): Promise<CatalogCategory[]> {
         }))
       : mockCategories;
   }, () => mockCategories);
-}
+});
 
 export async function getCatalogFilterOptions(): Promise<CatalogFilterOptions> {
-  return withDatabase(async () => {
-    const [products, categories] = await Promise.all([
-      prisma.product.findMany({
-        where: { status: "ACTIVE" },
-        include: {
-          category: true,
-          images: { orderBy: { order: "asc" } },
-          variants: { include: { color: true, size: true } },
-        },
-        orderBy: { createdAt: "desc" },
-      }),
-      getCatalogCategories(),
-    ]);
+  const [products, categories] = await Promise.all([
+    getCatalogProducts(),
+    getCatalogCategories(),
+  ]);
 
-    return buildFilterOptions(products.map(toCatalogProduct), categories);
-  }, () => buildFilterOptions(mockProducts, mockCategories));
+  return buildFilterOptions(products, categories);
 }
 
-export async function getCatalogProductBySlug(slug: string) {
+export const getCatalogProductBySlug = cache(async (slug: string) => {
   const fromMock = () => mockProducts.find((item) => item.slug === slug);
 
   return withDatabase(async () => {
@@ -294,7 +297,7 @@ export async function getCatalogProductBySlug(slug: string) {
 
     return product ? toCatalogProduct(product) : fromMock();
   }, fromMock);
-}
+});
 
 function getProductOrderBy(sort: CatalogSort = "recent") {
   switch (sort) {

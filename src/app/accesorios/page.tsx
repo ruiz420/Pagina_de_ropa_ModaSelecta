@@ -9,7 +9,7 @@ export const metadata = {
   description: "Accesorios para completar tu look con detalles elegantes.",
 };
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export default async function AccessoriesPage() {
   const [accessoryProducts, allProducts] = await Promise.all([

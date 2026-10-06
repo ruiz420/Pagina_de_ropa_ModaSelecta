@@ -9,7 +9,7 @@ export const metadata = {
   description: "Los productos que guardaste para decidir con calma.",
 };
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export default async function FavoritesPage() {
   const products = await getCatalogProducts();

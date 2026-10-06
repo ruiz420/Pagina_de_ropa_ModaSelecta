@@ -51,6 +51,9 @@ const TRUST_POINTS = [
   },
 ];
 
+// Se regenera sola: sin esto la pagina quedaria con los datos del dia de la compilacion.
+export const revalidate = 300;
+
 export default async function Home() {
   const [products, categories, collections, makeupProducts, accessoryProducts] =
     await Promise.all([

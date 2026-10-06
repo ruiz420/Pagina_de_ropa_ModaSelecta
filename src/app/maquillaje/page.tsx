@@ -9,7 +9,7 @@ export const metadata = {
   description: "Maquillaje para resaltar tu belleza: gloss, rubores, brochas y mas.",
 };
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export default async function MakeupPage() {
   const [makeupProducts, allProducts] = await Promise.all([
