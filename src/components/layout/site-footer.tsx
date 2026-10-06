@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { MessageCircle } from "lucide-react";
+import { BrandName } from "@/components/ui/brand-name";
 import { Container } from "@/components/ui/container";
 import { STORE, buildStoreWhatsappUrl } from "@/config/store";
 
@@ -30,7 +31,7 @@ export function SiteFooter() {
     <footer className="mt-12 border-t bg-card">
       <Container className="flex flex-col gap-3 py-5 md:flex-row md:items-center md:justify-between md:gap-8">
         <div className="flex items-center justify-between gap-4 md:justify-start md:gap-6">
-          <p className="font-display text-xl font-medium leading-none">{STORE.name}</p>
+          <BrandName className="text-3xl" />
           <a
             href={buildStoreWhatsappUrl("Hola, tengo una pregunta sobre un producto.")}
             target="_blank"

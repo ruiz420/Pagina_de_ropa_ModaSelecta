@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { ChevronRight, Heart, Menu, X } from "lucide-react";
+import { BrandName } from "@/components/ui/brand-name";
 import { Button } from "@/components/ui/button";
-import { STORE } from "@/config/store";
 
 type MenuLink = { href: string; label: string };
 type MenuCategory = { name: string; slug: string };
@@ -74,9 +74,7 @@ export function MobileMenu({
                 className="absolute inset-y-0 left-0 flex w-[86%] max-w-sm animate-in flex-col bg-background shadow-lift duration-300 slide-in-from-left"
               >
                 <div className="flex items-center justify-between border-b px-5 py-4">
-                  <span className="font-display text-2xl font-medium">
-                    {STORE.name}
-                  </span>
+                  <BrandName className="text-4xl" />
                   <Button
                     type="button"
                     variant="ghost"

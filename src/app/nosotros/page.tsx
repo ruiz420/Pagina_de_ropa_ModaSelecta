@@ -4,6 +4,7 @@ import { HowItWorks } from "@/components/layout/how-it-works";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { Button } from "@/components/ui/button";
+import { BrandName } from "@/components/ui/brand-name";
 import { Container } from "@/components/ui/container";
 import { STORE, buildStoreWhatsappUrl } from "@/config/store";
 
@@ -35,8 +36,8 @@ export default function AboutPage() {
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-brand-strong">
               Quiénes somos
             </p>
-            <h1 className="font-display text-5xl font-medium leading-none tracking-tight md:text-7xl">
-              {STORE.name}
+            <h1>
+              <BrandName className="text-7xl md:text-9xl" />
             </h1>
           </Container>
         </div>

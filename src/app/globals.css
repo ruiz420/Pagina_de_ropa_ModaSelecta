@@ -115,6 +115,7 @@
   --radius-lg: var(--radius);
   --font-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-brand: var(--font-great-vibes), "Brush Script MT", "Segoe Script", cursive;
   --font-mono: "Courier New", Courier, monospace;
   --shadow-soft: 0 1px 2px rgb(31 26 23 / 0.04), 0 8px 24px -8px rgb(31 26 23 / 0.12);
   --shadow-lift: 0 2px 4px rgb(31 26 23 / 0.05), 0 18px 40px -12px rgb(31 26 23 / 0.2);

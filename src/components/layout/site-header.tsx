@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AnnouncementBar } from "@/components/layout/announcement-bar";
 import { MobileMenu } from "@/components/layout/mobile-menu";
+import { BrandName } from "@/components/ui/brand-name";
 import { Container } from "@/components/ui/container";
 import { STORE } from "@/config/store";
 import { CartDrawer } from "@/features/cart/components/cart-drawer";
@@ -47,11 +48,8 @@ export async function SiteHeader() {
         <Container className="flex h-16 items-center justify-between gap-2 md:h-20">
           <div className="flex items-center gap-1">
             <MobileMenu categories={categories} links={navLinks} />
-            <Link
-              href="/"
-              className="font-display text-2xl font-medium tracking-tight sm:text-[28px]"
-            >
-              {STORE.name}
+            <Link href="/" aria-label={`${STORE.name}, ir al inicio`}>
+              <BrandName className="text-4xl sm:text-[2.6rem]" />
             </Link>
           </div>
           <nav
