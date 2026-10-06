@@ -1,18 +1,35 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { randomBytes } from "node:crypto";
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/features/auth/auth-options";
+import { getStaffSession } from "@/features/auth/require-staff";
+import { detectImageType } from "@/lib/image-type";
+import { isStorageConfigured, uploadPublicFile } from "@/lib/storage";
 import { slugifyText } from "@/lib/utils";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
-const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
+const MAX_FILES = 10;
 
+/**
+ * Sube fotos de productos (solo personal).
+ * - Con Supabase Storage configurado, se guardan alli (obligatorio en hosting
+ *   en la nube, donde el disco es de solo lectura).
+ * - Sin el, se guardan en public/uploads (desarrollo o servidor propio).
+ * El tipo se valida por el contenido real del archivo, no por lo que declara el navegador.
+ */
 export async function POST(request: Request) {
-  const session = await getServerSession(authOptions);
-
-  if (!["ADMIN", "EMPLOYEE"].includes(session?.user.role ?? "")) {
+  if (!(await getStaffSession())) {
     return NextResponse.json({ message: "No autorizado" }, { status: 401 });
+  }
+
+  const useStorage = isStorageConfigured();
+
+  // En hosting de solo lectura (Vercel) sin Storage la subida no puede funcionar.
+  if (!useStorage && process.env.VERCEL) {
+    return NextResponse.json(
+      { message: "El almacenamiento de imagenes no esta configurado (Supabase Storage)." },
+      { status: 503 },
+    );
   }
 
   const formData = await request.formData();
@@ -27,43 +44,53 @@ export async function POST(request: Request) {
     );
   }
 
-  const uploadDir = path.join(process.cwd(), "public", "uploads", "products");
-  await mkdir(uploadDir, { recursive: true });
+  if (files.length > MAX_FILES) {
+    return NextResponse.json(
+      { message: `Puedes subir hasta ${MAX_FILES} imagenes a la vez.` },
+      { status: 400 },
+    );
+  }
 
+  const uploadDir = path.join(process.cwd(), "public", "uploads", "products");
   const urls: string[] = [];
 
-  for (const file of files) {
-    if (!ALLOWED_TYPES.has(file.type)) {
-      return NextResponse.json(
-        { message: "Solo se permiten imagenes JPG, PNG, WEBP o GIF." },
-        { status: 400 },
-      );
+  try {
+    for (const file of files) {
+      if (file.size > MAX_FILE_SIZE) {
+        return NextResponse.json(
+          { message: "Cada imagen debe pesar maximo 5MB." },
+          { status: 400 },
+        );
+      }
+
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      const image = detectImageType(bytes);
+
+      if (!image) {
+        return NextResponse.json(
+          { message: "Solo se permiten imagenes JPG, PNG, WEBP o GIF." },
+          { status: 400 },
+        );
+      }
+
+      const baseName = slugifyText(file.name.replace(/\.[^.]+$/, "")) || "foto";
+      const filename = `${Date.now()}-${randomBytes(3).toString("hex")}-${baseName}.${image.extension}`;
+
+      if (useStorage) {
+        urls.push(await uploadPublicFile(`products/${filename}`, bytes, image.mime));
+      } else {
+        await mkdir(uploadDir, { recursive: true });
+        await writeFile(path.join(uploadDir, filename), bytes);
+        urls.push(`/uploads/products/${filename}`);
+      }
     }
-
-    if (file.size > MAX_FILE_SIZE) {
-      return NextResponse.json(
-        { message: "Cada imagen debe pesar maximo 5MB." },
-        { status: 400 },
-      );
-    }
-
-    const extension = getExtension(file);
-    const filename = `${Date.now()}-${slugifyText(file.name)}.${extension}`;
-    const bytes = Buffer.from(await file.arrayBuffer());
-
-    await writeFile(path.join(uploadDir, filename), bytes);
-    urls.push(`/uploads/products/${filename}`);
+  } catch (error) {
+    console.error("[uploads] no se pudo guardar la imagen", error);
+    return NextResponse.json(
+      { message: "No se pudo guardar la imagen. Intenta de nuevo." },
+      { status: 502 },
+    );
   }
 
   return NextResponse.json({ urls }, { status: 201 });
-}
-
-function getExtension(file: File) {
-  const extension = file.name.split(".").pop()?.toLowerCase();
-
-  if (extension && ["jpg", "jpeg", "png", "webp", "gif"].includes(extension)) {
-    return extension;
-  }
-
-  return file.type.split("/")[1] ?? "jpg";
 }

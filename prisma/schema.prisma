@@ -5,8 +5,11 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  // Conexion para los comandos de Prisma (db push, seed). En hosting en la nube,
+  // DATABASE_URL usa el pooler de transacciones y DIRECT_URL el Session pooler.
+  directUrl = env("DIRECT_URL")
 }
 
 enum RoleName {
