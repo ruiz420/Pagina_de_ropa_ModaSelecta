@@ -6,7 +6,7 @@ gratuito disponible) y funciona sin cambios en el código.
 ## 1. Crear el proyecto (lo haces tú, en tu cuenta)
 
 1. Entra a https://supabase.com y crea una cuenta o inicia sesión.
-2. **New project**: elige un nombre (por ejemplo `moda-selecta`), una
+2. **New project**: elige un nombre (por ejemplo `nuve-bella`), una
    **contraseña de base de datos larga y aleatoria** (guárdala en un gestor de
    contraseñas) y la región **East US (North Virginia)**. Medido desde Colombia
    responde en ~90 ms, frente a ~133 ms de EE. UU. oeste y ~156 ms de São Paulo:

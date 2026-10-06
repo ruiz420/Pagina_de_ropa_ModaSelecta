@@ -93,7 +93,7 @@ export const useCartStore = create<CartState>()(
       clear: () => set({ items: [] }),
     }),
     {
-      name: "moda-selecta-cart",
+      name: "nuve-bella-cart",
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({ items: state.items }),
     },

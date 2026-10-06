@@ -26,7 +26,7 @@ export const useRecentStore = create<RecentState>()(
       clear: () => set({ ids: [] }),
     }),
     {
-      name: "moda-selecta-recent",
+      name: "nuve-bella-recent",
       storage: createJSONStorage(() => localStorage),
     },
   ),

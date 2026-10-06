@@ -24,7 +24,7 @@ export const useFavoritesStore = create<FavoritesState>()(
         set((state) => ({ ids: state.ids.filter((id) => id !== productId) })),
     }),
     {
-      name: "moda-selecta-favorites",
+      name: "nuve-bella-favorites",
       storage: createJSONStorage(() => localStorage),
     },
   ),

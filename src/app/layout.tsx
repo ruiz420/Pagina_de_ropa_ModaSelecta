@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter } from "next/font/google";
 import { AppProviders } from "@/components/layout/app-providers";
+import { STORE } from "@/config/store";
 import "./globals.css";
 
 const inter = Inter({
@@ -18,13 +19,13 @@ const fraunces = Fraunces({
 
 export const metadata: Metadata = {
   title: {
-    default: "Moda Selecta",
-    template: "%s | Moda Selecta",
+    default: STORE.name,
+    template: `%s | ${STORE.name}`,
   },
   description:
     "Prendas seleccionadas, belleza y accesorios para estrenar con estilo.",
   openGraph: {
-    title: "Moda Selecta",
+    title: STORE.name,
     description:
       "Prendas seleccionadas, belleza y accesorios para estrenar con estilo.",
     type: "website",

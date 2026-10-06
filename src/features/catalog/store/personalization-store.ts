@@ -16,7 +16,7 @@ export const usePersonalizationStore = create<PersonalizationState>()(
       setEnabled: (enabled) => set({ enabled }),
     }),
     {
-      name: "moda-selecta-personalization",
+      name: "nuve-bella-personalization",
       storage: createJSONStorage(() => localStorage),
     },
   ),

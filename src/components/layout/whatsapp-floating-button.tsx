@@ -1,10 +1,9 @@
 "use client";
 
 import { MessageCircle } from "lucide-react";
-import { buildStoreWhatsappUrl } from "@/config/store";
+import { STORE, buildStoreWhatsappUrl } from "@/config/store";
 
-const whatsappMessage =
-  "Hola, quiero recibir informacion sobre los productos de Moda Selecta.";
+const whatsappMessage = `Hola, quiero recibir informacion sobre los productos de ${STORE.name}.`;
 
 export function WhatsappFloatingButton() {
   return (

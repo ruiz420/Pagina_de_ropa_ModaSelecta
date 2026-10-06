@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Sistema visual Moda Selecta
+ * Sistema visual Nuve Bella
  * Direccion: boutique editorial cercana. Fondo crema, tinta calida y UN solo
  * color de accion (frambuesa). Cada color tiene un rol; no se usan hex sueltos
  * en los componentes, solo estas variables (via clases como bg-brand).

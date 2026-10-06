@@ -1,4 +1,4 @@
-# Moda Selecta
+# Nuve Bella
 
 Tienda de ropa con compra rapida, carrito lateral, catalogo filtrable y panel administrativo protegido.
 

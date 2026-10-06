@@ -44,7 +44,7 @@ type StoreConfig = {
 };
 
 export const STORE: StoreConfig = {
-  name: "Moda Selecta",
+  name: "Nuve Bella",
   whatsappNumber: resolveWhatsappNumber(),
   // Reemplazar por una foto propia (idealmente vertical, +1200px de ancho).
   heroImage:
